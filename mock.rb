@@ -1,75 +1,41 @@
+require 'ostruct'
 class Object
   def mock(method)
-    Mock.new(OpenStruct.new(method))  # => #<Mock:0x007fceab841828>, #<Mock:0x007fceab840428>
+    Mock.new(OpenStruct.new(method))
   end
 
   def stub(method)
-    method.each_pair do |method_name, return_value|        # => {:hello=>"Stubbed method"}
-      self.send(:define_singleton_method, method_name) do  # => #<User:0x007fceaa84a348 @name="lev">
-        return return_value                                # => "Stubbed method"
-      end                                                  # => :hello
-    end                                                    # => {:hello=>"Stubbed method"}
+    method.each_pair do |method_name, return_value|
+      self.send(:define_singleton_method, method_name) do
+        return return_value
+      end
+    end
   end
 
   def expect(method, param)
-    Expectation.new(method, param, self)  # => #<Expectation:0x007fceaa848bb0 @method=:hello, @self=#<User:0x007fceaa84a348 @name="lev">>, #<Expectation:0x007fceaa848340 @method=:hello, @self=#<User:0x007fceaa84a348 @name="lev">>
+    Expectation.new(method, param, self)
   end
 end
 
 class Mock
   def initialize(open_struct)
-    open_struct.each_pair do |method_name, return_value|   # => #<OpenStruct numbers="123">, #<OpenStruct letters="abc">
-      self.send(:define_singleton_method, method_name) do  # => #<Mock:0x007fceab841828>, #<Mock:0x007fceab840428>
-        return return_value                                # => "123", "abc"
-      end                                                  # => :numbers, :letters
-    end                                                    # => {:numbers=>"123"}, {:letters=>"abc"}
+    open_struct.each_pair do |method_name, return_value|
+      self.send(:define_singleton_method, method_name) do
+        return return_value
+      end
+    end
   end
 end
 
 class Expectation
   attr_accessor :method, :self, :param   # => nil
   def initialize(method, param, object)
-    @method = method                     # => :hello, :hello
-    @self = object                       # => #<User:0x007fceaa84a348 @name="lev">, #<User:0x007fceaa84a348 @name="lev">
+    @method = method
+    @object = object
   end
 
   def returns(result)
-    @self                                                            # => #<User:0x007fceaa84a348 @name="lev">
-    @self.send(:define_singleton_method, method) { |param| result }  # => :hello
-    result                                                           # => "this is a test"
+    @object.send(:define_singleton_method, method) { |param| result }
+    result
   end
 end
-
-class User
-  attr_accessor :name   # => nil
-  def initialize(name)
-    @name = name        # => "lev", "joe"
-  end
-
-  def hello(message = "OG method")
-    message                         # => "OG method", "OG method"
-  end
-end
-
-#Calling mock on an object creates a mock object with the method given
-jeff = "hi"                          # => "hi"
-mock = jeff.mock(:numbers => "123")  # => #<Mock:0x007fceab841828>
-mock.numbers                         # => "123"
-
-#It also works without an object (really, with implied Main/Object), mimicking Mocha
-nums = mock(:letters => "abc")  # => #<Mock:0x007fceab840428>
-nums.letters                    # => "abc"
-
-#Calling stub on an object creates or overrides the method given for the Class itself,
-#This is as opposed to returning a mock object with the methods
-lev = User.new("lev")                 # => #<User:0x007fceaa84a348 @name="lev">
-lev.hello                             # => "OG method"
-lev.stub(:hello => "Stubbed method")  # => {:hello=>"Stubbed method"}
-lev.hello                             # => "Stubbed method"
-joe = User.new("joe")                 # => #<User:0x007fceaa849100 @name="joe">
-joe.hello                             # => "OG method"
-
-#Calling expect with a param returns a return value
-lev.expect(:hello, "testing")                            # => #<Expectation:0x007fceaa848bb0 @method=:hello, @self=#<User:0x007fceaa84a348 @name="lev">>
-lev.expect(:hello, "testing").returns("this is a test")  # => "this is a test"
-lev.hello("testing")                                     # => "this is a test"
