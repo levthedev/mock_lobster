@@ -8,13 +8,40 @@ class Mock
   end
 end
 
-class String
-  def stub(method)
+class Object
+  def mock(method)
     Mock.new(OpenStruct.new(method))
+  end
+
+  def stub(method)
+    method.each_pair do |method_name, return_value|
+      self.class.send(:define_method, method_name) do
+        return return_value
+      end
+    end
+  end
+end
+
+class User
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+  end
+
+  def hello
+    "OG method"
   end
 end
 
 jeff = "hi"
-mock = jeff.stub(:hi => "123")
-mock.methods - Object.methods
+mock = jeff.mock(:hi => "123")
 mock.hi
+
+nums = mock(:hi => "456")
+nums.hi
+
+lev = User.new("lev")
+lev.hello
+lev.stub(:hello => "Stubbed method")
+lev.hello
