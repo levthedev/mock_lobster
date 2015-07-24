@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description                = "see github.com/levthedev/mock-lobster for documentation"
   s.authors                    = ["Lev Kravinsky"]
   s.email                      = 'kravinskylev@gmail.com'
-  s.files                      = ["lib/mock.rb"]
+  s.files                      = ["mock.rb"]
   s.homepage                   =
     'http://rubygems.org/gems/mock-lobster'
   s.license                    = 'MIT'
