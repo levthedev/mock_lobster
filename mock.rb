@@ -1,4 +1,5 @@
 require 'ostruct'
+
 class Object
   def mock(method)
     Mock.new(OpenStruct.new(method))
