@@ -1,12 +1,12 @@
 Gem::Specification.new do |s|
   s.name                       = 'mock-lobster'
-  s.version                    = '0.1'
+  s.version                    = '0.2'
   s.date                       = '2015-07-24'
   s.summary                    = "a lightweight mocking library"
   s.description                = "see github.com/levthedev/mock-lobster for documentation"
   s.authors                    = ["Lev Kravinsky"]
   s.email                      = 'kravinskylev@gmail.com'
-  s.files                      = ["mock.rb"]
+  s.files                      = ["lib/mock.rb"]
   s.homepage                   =
     'http://rubygems.org/gems/mock-lobster'
   s.license                    = 'MIT'
