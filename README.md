@@ -1,4 +1,4 @@
-# mock-lobster
+# mock_lobster
 a tiny, lightweight mocking library
 
 ###useage
@@ -15,6 +15,6 @@ for example, if you want to test that a method ```twitter_stream(user)``` return
 on the other hand, if you want to use a real user object (perhaps because it has many attributes and you do not wish to mock them all out), then stubbing is the way to go.
 
 ###gem
-this is now a gem - see https://rubygems.org/gems/mock-lobster
+this is now a gem - see https://rubygems.org/gems/mock_lobster
 
-run ```gem install mock-lobster``` to install it.
+run ```gem install mock_lobster``` to install it.
