@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name                       = 'mock-lobster'
+  s.name                       = 'mock_lobster'
   s.version                    = '0.6'
   s.date                       = '2015-07-24'
   s.summary                    = "a lightweight mocking library"
