@@ -1,4 +1,4 @@
-require_relative 'mock.rb'
+require_relative '../lib/mock_lobster.rb'
 require 'rspec'
 
 RSpec.describe 'Mock' do
@@ -9,6 +9,14 @@ RSpec.describe 'Mock' do
 
     def hello(message = 'OG Method')
       message
+    end
+
+    def old_method
+      "old_method"
+    end
+
+    def extra
+      "extra_method"
     end
   end
 
@@ -25,13 +33,29 @@ RSpec.describe 'Mock' do
       lev = User.new('lev')
       expect(lev.hello).to eq('OG Method')
 
-      lev.stub(:hello => 'Stubbed Method')
+      lev.stubbify(:hello => 'Stubbed Method')
       expect(lev.hello).to eq('Stubbed Method')
+
+      b = User.new('jack')
+      expect(b.old_method).to eq("old_method")
+      b.stubbify(:old_method => "new_method")
+      expect(b.old_method).to eq("new_method")
+
+      c = User.new('joe')
+      b.stubbify(:extra => "this is an extra method")
+
+      expect(b.extra).to eq("this is an extra method")
+
+      expect(c.old_method).to eq("old_method")
+
+      b.reset
+      expect(b.old_method).to eq("old_method")
+      expect(b.extra).to eq("extra_method")
     end
 
     specify 'it creates new singleton methods when none are defined' do
       lev = User.new('lev')
-      lev.stub(:goodbye => 'Some return value')
+      lev.stubbify(:goodbye => 'Some return value')
       expect(lev.goodbye).to eq('Some return value')
     end
 
