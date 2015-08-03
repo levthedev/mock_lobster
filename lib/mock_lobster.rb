@@ -5,28 +5,25 @@ class Object
     Mock.new(method)
   end
 
-  def stubbify(hash)
-    index = 0
-    hash.each do |method_name, return_value|
-      if methods.include?(hash.to_a[index].first)
-        instance_variable_set("@copied_#{method_name}", method(hash.to_a[index].first))
-        index += 1
-        (@altered_methods ||= []) << method_name
+   def stubbify(hash)
+    hash.each do |name, value|
+      if methods.include?(name)
+        instance_variable_set("@lobster_#{name}", method(name).to_proc)
       end
-      self.send(:define_singleton_method, method_name) { return_value }
+      self.send(:define_singleton_method, name) { value }
     end
   end
 
   def reset
-    modified_variables = instance_variables.select {|e| e.to_s if e.to_s.include?("copied")}
-    @altered_methods.each do |name|
-      self.send(:define_singleton_method, name) do
-        instance_variable_get("@copied_" + name.to_s).call
+    singleton_methods.each do |method|
+      unless instance_variable_get("@lobster_#{method}") == nil
+        instance_method = instance_variable_get("@lobster_#{method}")
+        send(:define_singleton_method, method) { |*arg, &block| instance_method.call(*arg, &block) }
+      else
+        self.instance_eval { undef method }
       end
-      modified_variables.shift  #
     end
   end
-
 
 #  def expect(method, param)
 #    Expectation.new(method, param, self)
