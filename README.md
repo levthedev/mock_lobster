@@ -16,6 +16,7 @@ stubs are useful when you want to redefine or add methods to an existing class. 
 for example, if you want to test that a method ```twitter_stream(user)``` returns an array of tweets from a given user, you can create a mock object with the method called in ```twitter_stream``` - say, ```tweets```, and have it return a plausible array. this lets you test the logic in your methods without making costly API or database queries.
 
 ```mocked_user = mock(:tweets => ["tweet1", "tweet2"]```
+
 ```assert_equal twitter_stream(mocked_user), ["tweet1", "tweet2"]```
 
 on the other hand, if you want to use a real user object (perhaps because it has many attributes and you do not wish to mock them all out), then stubbing is the way to go. mock lobster will create singleton methods that are undefined in a stub and will override methods that are already defined. to reset the overridden method back to the original value, call ```reset``` on the object you stubbed.
