@@ -23,7 +23,7 @@ on the other hand, if you want to use a real user object (perhaps because it has
 
 generally, it is a good idea to call ```reset``` on any objects you modified in your ```teardown``` method in minitest, or in a ```before``` or ```after``` block in rspec.
 
-![mock lobster](http://raw.github.com/levthedev/mock_lobster/blob/master/screenshots/Screen%20Shot%202015-08-04%20at%2011.13.21%20AM.png)
+![mock lobster](https://github.com/levthedev/mock_lobster/blob/master/screenshots/Screen%20Shot%202015-08-04%20at%2011.13.21%20AM.png?raw=true)
 
 ###gem
 this is now a gem - see https://rubygems.org/gems/mock_lobster
