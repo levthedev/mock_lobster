@@ -1,5 +1,3 @@
-require 'ostruct'
-
 class Object
   def mock(method)
     Mock.new(method)
@@ -24,10 +22,6 @@ class Object
       end
     end
   end
-
-#  def expect(method, param)
-#    Expectation.new(method, param, self)
-#  end
 end
 
 class Mock
@@ -39,16 +33,3 @@ class Mock
     end
   end
 end
-
-#class Expectation
-#  attr_accessor :method, :self, :param   # => nil
-#  def initialize(method, param, object)
-#    @method = method
-#    @object = object
-#  end
-#
-#  def returns(result)
-#    @object.send(:define_singleton_method, method) { |param| result }
-#    result
-#  end
-#end
